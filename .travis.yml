@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker pull 0net/zeronet-x64
+  - docker run -d --name 0z --hostname 0z -e "UI_PASSWORD=Zero.Net" -v ~/0z:/root/data -p 43110:43110 -p 15441:15441 0net/zeronet-x64:latest
+  - docker ps -a
+  - docker exec -it 0z /bin/ps aux
