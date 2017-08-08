@@ -1,9 +1,27 @@
 sudo: required
 
+language: python
+python:
+  - 2.7
+
 services:
   - docker
 
+install:
+ - pip install -U pip wheel
+ - pip install gevent>=1.1.0 msgpack-python>=0.4.4
+ 
+before_script:
+  - openssl version -a
+
 before_install:
-  - docker pull 0net/zeronet-x64
-  - docker run -d --name 0z --hostname 0z -p 127.0.0.1:43110:43110 -p 15441:15441 0net/zeronet-x64:latest
+  - pip install -U pytest mock pytest-cov selenium
+  - pip install codecov
+  - pip install coveralls
+  - docker build -t 0z .
+  - docker run -d -p 127.0.0.1:43110:43110 -p 15441:15441 0z
   - docker ps -a
+
+cache:
+  directories:
+    - $HOME/.cache/pip
