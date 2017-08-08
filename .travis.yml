@@ -5,6 +5,5 @@ services:
 
 before_install:
   - docker pull 0net/zeronet-x64
-  - docker run -d --name 0z --hostname 0z -p 43110:43110 -p 15441:15441 0net/zeronet-x64:latest
+  - docker run -d --name 0z --hostname 0z -p 127.0.0.1:43110:43110 -p 15441:15441 0net/zeronet-x64:latest
   - docker ps -a
-  - docker exec -it 0z /bin/ps aux
