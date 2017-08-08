@@ -11,7 +11,8 @@ RUN apk --update upgrade \
   && pip install gevent msgpack-python \
   && apk del musl-dev gcc python-dev py2-pip \
   && rm -rf /var/cache/apk/* /tmp/* /var/tmp/* \
-  && chmod +x /root/launch /usr/bin/obfs4proxy
+  && chmod +x /root/launch /usr/bin/obfs4proxy \
+  && git clone https://github.com/HelloZeroNet/ZeroNet.git
 
 VOLUME /root/data
 
