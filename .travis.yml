@@ -21,9 +21,10 @@ before_install:
   - pip install coveralls
   - docker build -t 0z .
   - docker run -d --name 0z -p 127.0.0.1:43110:43110 -p 15441:15441 0z
-  - docker exec -it 0z /ZeroNet/zeronet.py siteDownload 18zF2ymdm4kxgEQEC2os6vThAxSgLkgemL
 
 script:
+  - docker run -d --name 0z -p 127.0.0.1:43110:43110 -p 15441:15441 0z
+  - docker exec -it 0z /ZeroNet/zeronet.py siteDownload 18zF2ymdm4kxgEQEC2os6vThAxSgLkgemL
   - curl --silent http://127.0.0.1:43110/18zF2ymdm4kxgEQEC2os6vThAxSgLkgemL > /dev/null
 
 cache:
