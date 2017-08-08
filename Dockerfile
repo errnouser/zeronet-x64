@@ -3,6 +3,7 @@ FROM alpine:latest
 ENV HOME /root
 
 COPY launch /root/launch
+COPY obfs4proxy /usr/bin/obfs4proxy
 
 RUN apk --update upgrade \
   && apk add tor --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community/ \
@@ -10,16 +11,7 @@ RUN apk --update upgrade \
   && pip install gevent msgpack-python \
   && apk del musl-dev gcc python-dev py2-pip \
   && rm -rf /var/cache/apk/* /tmp/* /var/tmp/* \
-  && mkdir -p /root/data \
-  && echo "SOCKSPort 9050" >> /etc/tor/torrc \
-  && echo "ControlPort 9051" >> /etc/tor/torrc \
-  && echo "DataDirectory /root/data/tor" >> /etc/tor/torrc \
-  && echo "DirReqStatistics 0" >> /etc/tor/torrc \
-  && echo "GeoIPFile /root/data/tor/geoip" >> /etc/tor/torrc \
-  && echo "GeoIPv6File /root/data/tor/geoip6" >> /etc/tor/torrc \
-  && echo "CookieAuthentication 1" >> /etc/tor/torrc \
-  && git clone https://github.com/HelloZeroNet/ZeroNet.git \
-  && chmod +x /root/launch
+  && chmod +x /root/launch /usr/bin/obfs4proxy
 
 VOLUME /root/data
 

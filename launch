@@ -3,9 +3,34 @@
 set -e
 
 cmd="/ZeroNet/zeronet.py"
+TorData="/root/data/tor"
+TorRC="${TorData}/torrc"
+GeoIPData="${TorData}/geoip"
+GeoIP6Data="${TorData}/geoip6"
+
+[ -d $TorData ] || mkdir -p $TorData
+if [ ! -f ${TorRC} ]; then
+	cat > ${TorRC} <<end
+SOCKSPort 9050
+ControlPort 9051
+DataDirectory ${TorData}
+DirReqStatistics 0
+GeoIPFile ${GeoIPData}
+GeoIPv6File ${GeoIP6Data}
+CookieAuthentication 1
+UseBridges 1
+obfs4 192.36.31.168:60776 B00EF075F56B9CAE65443EA8FA2B47D4316D7A16 cert=qVAtzNOYtf7e7Pi00qnmvJ5mj3tpPQRwBCaxOrdyixUZEkkqp/hUXLK899I2O40MLpT1fw iat-mode=0
+obfs4 194.132.209.36:33162 01A6E384903E7DEF65C8436C6C62E7A06D22F208 cert=gLO9nWcDTA7fkNv9wor9PXlMhcQuxcXXLFrsCdpbs4GHFyYY217jCGXN2csaL8S0V5HwVQ iat-mode=0
+obfs4 83.212.97.47:54187 80FCA5A349AE7E5C2C8503BFB908D4204FDB9C3E cert=IfdoBRxcIl/l5YrMUxFrNSOOI5DjU3w8IcZI/CQMbpzBj/UdpdCZsT5yfbZ1MFL6xmTTGw iat-mode=0
+ClientTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+end
+fi
+## for github.com maintenance
+git config --global http.proxy socks5://127.0.0.1:9050
+git config --global https.proxy socks5://127.0.0.1:9050
 
 if ! ${DISABLE_TOR}; then
-    tor &
+    tor -f ${TorRC} &
 fi
 
 if [ ! x"$UI_PASSWORD" = "xNone" ]; then 
